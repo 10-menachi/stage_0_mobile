@@ -8,6 +8,7 @@ class TodoCard extends StatelessWidget {
   final bool isDone;
 
   const TodoCard({
+    super.key,
     required this.title,
     required this.description,
     required this.time,
