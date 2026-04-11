@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stage_0_mobile/src/theme.dart';
-import 'package:stage_0_mobile/src/widgets/navigation/nav_items.dart';
+import 'package:stage_0_mobile/src/widgets/navigation/bottom_nav/nav_items.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int pageIndex;
