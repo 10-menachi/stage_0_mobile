@@ -53,8 +53,8 @@ class TodoCard extends StatelessWidget {
                   width: 38,
                   decoration: BoxDecoration(
                     color: isDone
-                        ? Colors.white.withOpacity(0.35)
-                        : Colors.white.withOpacity(0.2),
+                        ? Colors.white.withValues(alpha: 0.35)
+                        : Colors.white.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -71,7 +71,7 @@ class TodoCard extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                color: Colors.white.withOpacity(0.9),
+                color: Colors.white.withValues(alpha: 0.9),
                 fontSize: 13,
                 height: 1.35,
               ),
@@ -82,13 +82,13 @@ class TodoCard extends StatelessWidget {
                 Icon(
                   Icons.access_time,
                   size: 18,
-                  color: Colors.white.withOpacity(0.95),
+                  color: Colors.white.withValues(alpha: 0.95),
                 ),
                 const SizedBox(width: 6),
                 Text(
                   time,
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.95),
+                    color: Colors.white.withValues(alpha: 0.95),
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),
@@ -105,14 +105,14 @@ class TodoCard extends StatelessWidget {
                           height: 32,
                           width: 32,
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.85),
+                            color: Colors.white.withValues(alpha: 0.85),
                             shape: BoxShape.circle,
                             border: Border.all(color: color, width: 2),
                           ),
                           child: Icon(
                             Icons.person,
                             size: 16,
-                            color: color.withOpacity(0.9),
+                            color: color.withValues(alpha: 0.9),
                           ),
                         ),
                       );

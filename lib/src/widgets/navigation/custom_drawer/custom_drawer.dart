@@ -49,7 +49,7 @@ class AppDrawer extends StatelessWidget {
                     Text(
                       'Your productivity companion',
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.4),
+                        color: Colors.white.withValues(alpha: 0.4),
                         fontSize: 13,
                       ),
                     ),
@@ -61,10 +61,10 @@ class AppDrawer extends StatelessWidget {
                         vertical: 14,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.07),
+                        color: Colors.white.withValues(alpha: 0.07),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: Colors.white.withOpacity(0.08),
+                          color: Colors.white.withValues(alpha: 0.08),
                         ),
                       ),
                       child: Row(
@@ -121,7 +121,7 @@ class AppDrawer extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(12, 0, 12, 24),
                 child: Column(
                   children: [
-                    Divider(color: Colors.white.withOpacity(0.08)),
+                    Divider(color: Colors.white.withValues(alpha: 0.08)),
                     const SizedBox(height: 8),
                     DrawerItem(
                       icon: Icons.settings_outlined,

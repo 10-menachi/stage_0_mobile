@@ -13,7 +13,7 @@ class TaskList extends StatelessWidget {
       child: ListView.separated(
         padding: const EdgeInsets.only(bottom: 120),
         itemCount: todos.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 14),
+        separatorBuilder: (_, _) => const SizedBox(height: 14),
         itemBuilder: (context, index) {
           final todo = todos[index];
           return GestureDetector(

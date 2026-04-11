@@ -51,7 +51,7 @@ class TaskDetailModal extends StatelessWidget {
                         height: 4,
                         width: 40,
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.35),
+                          color: Colors.white.withValues(alpha: 0.35),
                           borderRadius: BorderRadius.circular(999),
                         ),
                       ),
@@ -63,7 +63,7 @@ class TaskDetailModal extends StatelessWidget {
                         height: 36,
                         width: 36,
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
+                          color: Colors.white.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: const Icon(
@@ -83,7 +83,7 @@ class TaskDetailModal extends StatelessWidget {
                     vertical: 5,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(

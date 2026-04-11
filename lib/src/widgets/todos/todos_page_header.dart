@@ -49,21 +49,7 @@ class _TodosPageHeaderState extends State<TodosPageHeader> {
           style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 12),
-        Text(
-          formattedDate,
-          style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'You Have ${todos.length} Tasks Today',
-          style: const TextStyle(
-            fontSize: 24,
-            height: 1.05,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 18),
-        // ── Search ──
+
         Container(
           height: 52,
           decoration: BoxDecoration(
@@ -88,7 +74,7 @@ class _TodosPageHeaderState extends State<TodosPageHeader> {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: widget.filters.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 10),
+            separatorBuilder: (_, _) => const SizedBox(width: 10),
             itemBuilder: (context, index) {
               final bool isSelected = widget.selectedFilterIndex == index;
               return GestureDetector(

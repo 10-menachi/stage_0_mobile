@@ -7,7 +7,7 @@ class DrawerDivider extends StatelessWidget {
     return Container(
       height: 28,
       width: 1,
-      color: Colors.white.withOpacity(0.1),
+      color: Colors.white.withValues(alpha: 0.1),
     );
   }
 }

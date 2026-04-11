@@ -19,13 +19,13 @@ class DrawerItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color textColor = isActive
         ? AppColors.secondary
-        : Colors.white.withOpacity(0.75);
+        : Colors.white.withValues(alpha: 0.75);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 2),
       decoration: BoxDecoration(
         color: isActive
-            ? AppColors.secondary.withOpacity(0.12)
+            ? AppColors.secondary.withValues(alpha: 0.12)
             : Colors.transparent,
         borderRadius: BorderRadius.circular(14),
       ),

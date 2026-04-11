@@ -45,7 +45,7 @@ class CreateTodoModalState extends State<CreateTodoModal> {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.04),
+                  color: Colors.black.withValues(alpha: 0.04),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -143,7 +143,7 @@ class CreateTodoModalState extends State<CreateTodoModal> {
                             boxShadow: sel
                                 ? [
                                     BoxShadow(
-                                      color: c.withOpacity(0.4),
+                                      color: c.withValues(alpha: 0.4),
                                       blurRadius: 8,
                                       offset: const Offset(0, 3),
                                     ),
