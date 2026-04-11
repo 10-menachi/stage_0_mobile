@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _pageIndex = 0;
+
   void _nextPage(int index) {
     setState(() {
       _pageIndex = index;
@@ -27,11 +28,9 @@ class _HomePageState extends State<HomePage> {
         onDestinationSelected: _nextPage,
       ),
       body: <Widget>[
-        TodoListScreen(),
-
-        CurrencyConverterScreen(),
-
-        JournalingScreen(),
+        const TodoListScreen(),
+        const CurrencyConverterScreen(),
+        const JournalingScreen(),
       ][_pageIndex],
     );
   }
