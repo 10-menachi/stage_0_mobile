@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:stage_0_mobile/src/theme.dart';
+import 'package:stage_0_mobile/src/widgets/nav_item.dart';
 
-class CustomBottomNavigationBar extends StatefulWidget {
+class CustomBottomNavigationBar extends StatelessWidget {
   final int pageIndex;
-  final Function(int) onDestinationSelected;
+  final ValueChanged<int> onDestinationSelected;
+
   const CustomBottomNavigationBar({
     super.key,
     required this.pageIndex,
@@ -10,31 +13,50 @@ class CustomBottomNavigationBar extends StatefulWidget {
   });
 
   @override
-  State<CustomBottomNavigationBar> createState() => _BottomNavigationBarState();
-}
-
-class _BottomNavigationBarState extends State<CustomBottomNavigationBar> {
-  @override
   Widget build(BuildContext context) {
-    return NavigationBar(
-      onDestinationSelected: widget.onDestinationSelected,
-      indicatorColor: Colors.amber,
-      selectedIndex: widget.pageIndex,
-      destinations: const <Widget>[
-        NavigationDestination(
-          selectedIcon: Icon(Icons.home),
-          icon: Icon(Icons.checklist),
-          label: 'Todo List',
+    return SafeArea(
+      minimum: const EdgeInsets.fromLTRB(24, 0, 24, 16),
+      child: Container(
+        height: 70, // 🔥 reduced from 86
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: AppColors.tertiaryColor,
+          borderRadius: BorderRadius.circular(28), // slightly tighter
+          boxShadow: const [
+            BoxShadow(
+              blurRadius: 16,
+              offset: Offset(0, 6),
+              color: Colors.black12,
+            ),
+          ],
         ),
-        NavigationDestination(
-          icon: Icon(Icons.currency_exchange),
-          label: 'Currency Converter',
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            NavItem(
+              icon: Icons.checklist,
+              isSelected: pageIndex == 0,
+              selectedColor: AppColors.secondary,
+              unselectedColor: Colors.grey,
+              onTap: () => onDestinationSelected(0),
+            ),
+            NavItem(
+              icon: Icons.currency_exchange,
+              isSelected: pageIndex == 1,
+              selectedColor: AppColors.secondary,
+              unselectedColor: Colors.grey,
+              onTap: () => onDestinationSelected(1),
+            ),
+            NavItem(
+              icon: Icons.library_books,
+              isSelected: pageIndex == 2,
+              selectedColor: AppColors.secondary,
+              unselectedColor: Colors.grey,
+              onTap: () => onDestinationSelected(2),
+            ),
+          ],
         ),
-        NavigationDestination(
-          icon: Icon(Icons.library_books),
-          label: 'Journaling',
-        ),
-      ],
+      ),
     );
   }
 }
