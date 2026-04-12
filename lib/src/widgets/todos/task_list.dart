@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stage_0_mobile/src/database.dart';
 import 'package:stage_0_mobile/src/helpers.dart';
-import 'package:stage_0_mobile/src/settings/riverpod/providers/todos_provider.dart';
+import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/todos_provider.dart';
 import 'package:stage_0_mobile/src/widgets/todos/todo_card.dart';
 
 class TaskList extends ConsumerWidget {

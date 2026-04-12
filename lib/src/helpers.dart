@@ -27,3 +27,9 @@ String formatDate(DateTime dateTime) {
 String formatTime(DateTime dateTime) {
   return DateFormat('h:mm a').format(dateTime);
 }
+
+String formatTimeOfDay(TimeOfDay t) {
+  final now = DateTime.now();
+  final dt = DateTime(now.year, now.month, now.day, t.hour, t.minute);
+  return DateFormat('hh:mm a').format(dt);
+}

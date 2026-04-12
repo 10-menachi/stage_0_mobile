@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stage_0_mobile/src/database.dart';
+import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/todos_provider.dart';
 import 'package:stage_0_mobile/src/theme.dart';
-import 'package:stage_0_mobile/src/settings/riverpod/providers/todos_provider.dart';
 import 'package:stage_0_mobile/src/widgets/modals/todos/create_todo_modal/create_todo_modal.dart';
 import 'package:stage_0_mobile/src/widgets/modals/todos/task_detail_modal/task_detail_modal.dart';
 import 'package:stage_0_mobile/src/widgets/navigation/app_bar/custom_app_bar.dart';

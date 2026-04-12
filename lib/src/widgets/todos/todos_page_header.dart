@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:stage_0_mobile/src/settings/riverpod/providers/todos_provider.dart';
+import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/create_todo_provider.dart';
+import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/todos_provider.dart';
 import 'package:stage_0_mobile/src/utils/constants.dart';
 
 class TodosPageHeader extends StatefulWidget {
