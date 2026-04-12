@@ -27,11 +27,14 @@ class _HomePageState extends State<HomePage> {
         pageIndex: _pageIndex,
         onDestinationSelected: _nextPage,
       ),
-      body: <Widget>[
-        const TodoListScreen(),
-        const CurrencyConverterScreen(),
-        const JournalingScreen(),
-      ][_pageIndex],
+      body: IndexedStack(
+        index: _pageIndex,
+        children: const [
+          TodoListScreen(),
+          CurrencyConverterScreen(),
+          JournalingScreen(),
+        ],
+      ),
     );
   }
 }

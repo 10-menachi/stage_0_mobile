@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stage_0_mobile/src/database.dart';
 import 'package:stage_0_mobile/src/theme.dart';
-import 'package:stage_0_mobile/src/utils/constants.dart';
+import 'package:stage_0_mobile/src/settings/riverpod/providers/todos_provider.dart';
 import 'package:stage_0_mobile/src/widgets/modals/todos/create_todo_modal/create_todo_modal.dart';
 import 'package:stage_0_mobile/src/widgets/modals/todos/task_detail_modal/task_detail_modal.dart';
 import 'package:stage_0_mobile/src/widgets/navigation/app_bar/custom_app_bar.dart';
@@ -8,14 +10,14 @@ import 'package:stage_0_mobile/src/widgets/navigation/custom_drawer/custom_drawe
 import 'package:stage_0_mobile/src/widgets/todos/task_list.dart';
 import 'package:stage_0_mobile/src/widgets/todos/todos_page_header.dart';
 
-class TodoListScreen extends StatefulWidget {
+class TodoListScreen extends ConsumerStatefulWidget {
   const TodoListScreen({super.key});
 
   @override
-  State<TodoListScreen> createState() => _TodoListScreenState();
+  ConsumerState<TodoListScreen> createState() => _TodoListScreenState();
 }
 
-class _TodoListScreenState extends State<TodoListScreen> {
+class _TodoListScreenState extends ConsumerState<TodoListScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final List<String> _filters = ['Today', 'Tomorrow', 'Upcoming'];
   int selectedFilterIndex = 0;
@@ -26,22 +28,17 @@ class _TodoListScreenState extends State<TodoListScreen> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => const CreateTodoModal(),
-    );
+    ).then((_) {
+      ref.invalidate(todosProvider);
+    });
   }
 
-  void _openTaskDetail(Map<String, dynamic> todo, int index) {
+  void _openTaskDetail(TodoItem todo, int index) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => TaskDetailModal(
-        todo: todo,
-        onToggleDone: () {
-          setState(() {
-            todos[index]['done'] = !(todos[index]['done'] as bool);
-          });
-        },
-      ),
+      builder: (context) => TaskDetailModal(todo: todo, onToggleDone: () {}),
     );
   }
 

@@ -20,7 +20,6 @@ class _ModalBodyState extends State<ModalBody> {
   final _descController = TextEditingController();
 
   String _selectedCategory = 'Work';
-  String _selectedNotify = '15 min';
   Color _selectedColor = const Color(0xFF7B6EF6);
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _startTime = const TimeOfDay(hour: 9, minute: 0);
@@ -64,11 +63,8 @@ class _ModalBodyState extends State<ModalBody> {
       startTime: _startTime,
       endTime: _endTime,
       category: _selectedCategory,
-      remindBefore: _selectedNotify,
     );
-
     widget.onSubmit?.call(data);
-    Navigator.pop(context);
   }
 
   String _formatTime(TimeOfDay t) {
@@ -236,41 +232,6 @@ class _ModalBodyState extends State<ModalBody> {
                 }).toList(),
               ),
               const SizedBox(height: 20),
-              ModalLabel(text: 'Remind Me'),
-              const SizedBox(height: 10),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: ['5 min', '15 min', '30 min', '1 hour'].map((n) {
-                  final bool sel = _selectedNotify == n;
-                  return GestureDetector(
-                    onTap: () => setState(() => _selectedNotify = n),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 150),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 9,
-                      ),
-                      decoration: BoxDecoration(
-                        color: sel ? Colors.black : Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: sel ? Colors.black : Colors.black12,
-                        ),
-                      ),
-                      child: Text(
-                        n,
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: sel ? Colors.white : Colors.black54,
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-              const SizedBox(height: 32),
               SizedBox(
                 width: double.infinity,
                 height: 56,

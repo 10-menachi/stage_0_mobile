@@ -8,7 +8,6 @@ class CreateTaskFormData {
   final TimeOfDay startTime;
   final TimeOfDay endTime;
   final String category;
-  final String remindBefore;
 
   const CreateTaskFormData({
     required this.title,
@@ -18,6 +17,5 @@ class CreateTaskFormData {
     required this.startTime,
     required this.endTime,
     required this.category,
-    required this.remindBefore,
   });
 }

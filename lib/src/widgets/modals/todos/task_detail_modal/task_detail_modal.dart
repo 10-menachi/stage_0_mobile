@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:stage_0_mobile/src/database.dart';
+import 'package:stage_0_mobile/src/helpers.dart';
 import 'package:stage_0_mobile/src/widgets/modals/todos/task_detail_modal/detail_row.dart';
 import 'package:stage_0_mobile/src/widgets/modals/todos/task_detail_modal/detail_section_label.dart';
 import 'package:stage_0_mobile/src/widgets/modals/todos/task_detail_modal/header_chip.dart';
 import 'package:stage_0_mobile/src/widgets/shared/custom_divider.dart';
 
 class TaskDetailModal extends StatelessWidget {
-  final Map<String, dynamic> todo;
+  final TodoItem todo;
   final VoidCallback onToggleDone;
 
   const TaskDetailModal({
@@ -17,11 +19,8 @@ class TaskDetailModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = todo['priorityColor'] as Color;
-    final bool isDone = todo['done'] as bool;
-    final String date = DateFormat(
-      'EEEE, d MMMM y',
-    ).format(todo['date'] as DateTime);
+    final Color color = parseColor(todo.priorityColor);
+    final bool isDone = todo.done;
 
     return Container(
       margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.12),
@@ -87,7 +86,7 @@ class TaskDetailModal extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
-                    todo['category'] as String,
+                    todo.category,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 12,
@@ -98,7 +97,7 @@ class TaskDetailModal extends StatelessWidget {
                 const SizedBox(height: 12),
                 // Title
                 Text(
-                  todo['title'] as String,
+                  todo.title,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 26,
@@ -116,14 +115,13 @@ class TaskDetailModal extends StatelessWidget {
                   children: [
                     HeaderChip(
                       icon: Icons.access_time,
-                      label: '${todo['startTime']} – ${todo['endTime']}',
+                      label:
+                          '${formatTime(todo.startTime)} – ${formatTime(todo.endTime)}',
                     ),
                     const SizedBox(width: 10),
                     HeaderChip(
                       icon: Icons.calendar_today_outlined,
-                      label: DateFormat(
-                        'd MMM',
-                      ).format(todo['date'] as DateTime),
+                      label: formatDate(todo.date),
                     ),
                   ],
                 ),
@@ -150,7 +148,7 @@ class TaskDetailModal extends StatelessWidget {
                       border: Border.all(color: Colors.black12),
                     ),
                     child: Text(
-                      todo['description'] as String,
+                      todo.description,
                       style: const TextStyle(
                         fontSize: 15,
                         height: 1.6,
@@ -159,8 +157,6 @@ class TaskDetailModal extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 24),
-
-                  // Details grid
                   const DetailSectionLabel(text: 'Details'),
                   const SizedBox(height: 10),
                   Container(
@@ -174,28 +170,28 @@ class TaskDetailModal extends StatelessWidget {
                         DetailRow(
                           icon: Icons.calendar_today_outlined,
                           label: 'Date',
-                          value: date,
+                          value: formatDate(todo.date),
                           iconColor: color,
                         ),
                         CustomDivider(),
                         DetailRow(
                           icon: Icons.schedule_outlined,
                           label: 'Start time',
-                          value: todo['startTime'] as String,
+                          value: formatTime(todo.startTime),
                           iconColor: color,
                         ),
                         CustomDivider(),
                         DetailRow(
                           icon: Icons.schedule_outlined,
                           label: 'End time',
-                          value: todo['endTime'] as String,
+                          value: formatTime(todo.endTime),
                           iconColor: color,
                         ),
                         CustomDivider(),
                         DetailRow(
                           icon: Icons.label_outline_rounded,
                           label: 'Category',
-                          value: todo['category'] as String,
+                          value: todo.category,
                           iconColor: color,
                         ),
                         CustomDivider(),
