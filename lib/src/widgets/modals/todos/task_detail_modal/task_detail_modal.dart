@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stage_0_mobile/src/database.dart';
 import 'package:stage_0_mobile/src/helpers.dart';
-import 'package:stage_0_mobile/src/widgets/modals/todos/task_detail_modal/detail_row.dart';
-import 'package:stage_0_mobile/src/widgets/modals/todos/task_detail_modal/detail_section_label.dart';
-import 'package:stage_0_mobile/src/widgets/modals/todos/task_detail_modal/header_chip.dart';
-import 'package:stage_0_mobile/src/widgets/shared/custom_divider.dart';
-import 'package:stage_0_mobile/src/widgets/modals/todos/task_detail_modal/task_detail_actions.dart';
+import 'package:stage_0_mobile/src/widgets/modals/todos/task_detail_modal/modal_body/modal_body.dart';
+import 'package:stage_0_mobile/src/widgets/modals/todos/task_detail_modal/modal_header/modal_header.dart';
 
 class TaskDetailModal extends StatelessWidget {
   final TodoItem todo;
@@ -22,7 +19,6 @@ class TaskDetailModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color color = parseColor(todo.priorityColor);
-    final bool isDone = todo.done;
 
     return Container(
       margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.12),
@@ -32,196 +28,13 @@ class TaskDetailModal extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // ── Colored header ──
-          Container(
-            padding: const EdgeInsets.fromLTRB(24, 16, 20, 24),
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(32),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Handle + close
-                Row(
-                  children: [
-                    Center(
-                      child: Container(
-                        height: 4,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.35),
-                          borderRadius: BorderRadius.circular(999),
-                        ),
-                      ),
-                    ),
-                    const Spacer(),
-                    GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: Container(
-                        height: 36,
-                        width: 36,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.2),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Icon(
-                          Icons.close,
-                          size: 18,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                // Category badge
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 5,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    todo.category,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                // Title
-                Text(
-                  todo.title,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 26,
-                    fontWeight: FontWeight.w700,
-                    height: 1.15,
-                    decoration: isDone
-                        ? TextDecoration.lineThrough
-                        : TextDecoration.none,
-                    decorationColor: Colors.white54,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                // Time + date row
-                Row(
-                  children: [
-                    HeaderChip(
-                      icon: Icons.access_time,
-                      label:
-                          '${formatTime(todo.startTime)} – ${formatTime(todo.endTime)}',
-                    ),
-                    const SizedBox(width: 10),
-                    HeaderChip(
-                      icon: Icons.calendar_today_outlined,
-                      label: formatDate(todo.date),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+          ModalHeader(color: color, todo: todo),
 
-          // ── Scrollable body ──
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(24, 28, 24, 32),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Description section
-                  const DetailSectionLabel(text: 'Description'),
-                  const SizedBox(height: 10),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Colors.black12),
-                    ),
-                    child: Text(
-                      todo.description,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        height: 1.6,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  const DetailSectionLabel(text: 'Details'),
-                  const SizedBox(height: 10),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Colors.black12),
-                    ),
-                    child: Column(
-                      children: [
-                        DetailRow(
-                          icon: Icons.calendar_today_outlined,
-                          label: 'Date',
-                          value: formatDate(todo.date),
-                          iconColor: color,
-                        ),
-                        CustomDivider(),
-                        DetailRow(
-                          icon: Icons.schedule_outlined,
-                          label: 'Start time',
-                          value: formatTime(todo.startTime),
-                          iconColor: color,
-                        ),
-                        CustomDivider(),
-                        DetailRow(
-                          icon: Icons.schedule_outlined,
-                          label: 'End time',
-                          value: formatTime(todo.endTime),
-                          iconColor: color,
-                        ),
-                        CustomDivider(),
-                        DetailRow(
-                          icon: Icons.label_outline_rounded,
-                          label: 'Category',
-                          value: todo.category,
-                          iconColor: color,
-                        ),
-                        CustomDivider(),
-                        DetailRow(
-                          icon: Icons.check_circle_outline_rounded,
-                          label: 'Status',
-                          value: isDone ? 'Completed' : 'In Progress',
-                          iconColor: isDone
-                              ? const Color(0xFF10B981)
-                              : Colors.orange,
-                          valueColor: isDone
-                              ? const Color(0xFF10B981)
-                              : Colors.orange,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-                  TaskDetailActions(
-                    todo: todo,
-                    isDone: isDone,
-                    color: color,
-                    onToggleDone: onToggleDone,
-                    onEditComplete: onEditComplete,
-                  ),
-                ],
-              ),
-            ),
+          ModalBody(
+            todo: todo,
+            color: color,
+            onToggleDone: onToggleDone,
+            onEditComplete: onEditComplete,
           ),
         ],
       ),

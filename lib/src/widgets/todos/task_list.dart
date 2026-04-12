@@ -30,14 +30,7 @@ class TaskList extends ConsumerWidget {
 
               return GestureDetector(
                 onTap: () => openTaskDetail(todo, index),
-                child: TodoCard(
-                  title: todo.title,
-                  description: todo.description,
-                  time:
-                      '${formatTime(todo.startTime)} - ${formatTime(todo.endTime)}',
-                  color: parseColor(todo.priorityColor),
-                  isDone: todo.done,
-                ),
+                child: TodoCard(todo: todo),
               );
             },
           );

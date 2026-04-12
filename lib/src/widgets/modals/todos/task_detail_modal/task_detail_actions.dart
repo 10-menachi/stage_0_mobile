@@ -4,7 +4,6 @@ import 'package:stage_0_mobile/src/widgets/modals/todos/create_todo_modal/create
 
 class TaskDetailActions extends StatelessWidget {
   final TodoItem todo;
-  final bool isDone;
   final Color color;
   final VoidCallback onToggleDone;
   final VoidCallback onEditComplete;
@@ -12,7 +11,6 @@ class TaskDetailActions extends StatelessWidget {
   const TaskDetailActions({
     super.key,
     required this.todo,
-    required this.isDone,
     required this.color,
     required this.onToggleDone,
     required this.onEditComplete,
@@ -41,24 +39,24 @@ class TaskDetailActions extends StatelessWidget {
             child: Container(
               height: 54,
               decoration: BoxDecoration(
-                color: isDone ? const Color(0xFFF0F0F0) : color,
+                color: todo.done ? const Color(0xFFF0F0F0) : color,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
-                    isDone ? Icons.refresh_rounded : Icons.check_rounded,
-                    color: isDone ? Colors.black54 : Colors.white,
+                    todo.done ? Icons.refresh_rounded : Icons.check_rounded,
+                    color: todo.done ? Colors.black54 : Colors.white,
                     size: 20,
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    isDone ? 'Mark Undone' : 'Mark Done',
+                    todo.done ? 'Mark Undone' : 'Mark Done',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
-                      color: isDone ? Colors.black54 : Colors.white,
+                      color: todo.done ? Colors.black54 : Colors.white,
                     ),
                   ),
                 ],

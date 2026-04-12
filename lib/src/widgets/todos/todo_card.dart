@@ -1,29 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:stage_0_mobile/src/database.dart';
+import 'package:stage_0_mobile/src/helpers.dart';
 
 class TodoCard extends StatelessWidget {
-  final String title;
-  final String description;
-  final String time;
-  final Color color;
-  final bool isDone;
+  final TodoItem todo;
 
-  const TodoCard({
-    super.key,
-    required this.title,
-    required this.description,
-    required this.time,
-    required this.color,
-    required this.isDone,
-  });
+  const TodoCard({super.key, required this.todo});
 
   @override
   Widget build(BuildContext context) {
     return Opacity(
-      opacity: isDone ? 0.65 : 1.0,
+      opacity: todo.done ? 0.65 : 1.0,
       child: Container(
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: color,
+          color: parseColor(todo.priorityColor),
           borderRadius: BorderRadius.circular(22),
         ),
         child: Column(
@@ -34,13 +25,13 @@ class TodoCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    title,
+                    todo.title,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
                       height: 1.1,
                       fontWeight: FontWeight.w500,
-                      decoration: isDone
+                      decoration: todo.done
                           ? TextDecoration.lineThrough
                           : TextDecoration.none,
                       decorationColor: Colors.white60,
@@ -52,22 +43,22 @@ class TodoCard extends StatelessWidget {
                   height: 38,
                   width: 38,
                   decoration: BoxDecoration(
-                    color: isDone
+                    color: todo.done
                         ? Colors.white.withValues(alpha: 0.35)
                         : Colors.white.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
-                    isDone ? Icons.check : Icons.more_horiz,
+                    todo.done ? Icons.check : Icons.more_horiz,
                     color: Colors.white,
-                    size: isDone ? 20 : 24,
+                    size: todo.done ? 20 : 24,
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 10),
             Text(
-              description,
+              todo.description,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -86,7 +77,7 @@ class TodoCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  time,
+                  '${formatTime(todo.startTime)} - ${formatTime(todo.endTime)}',
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: 0.95),
                     fontSize: 13,
@@ -107,12 +98,17 @@ class TodoCard extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Colors.white.withValues(alpha: 0.85),
                             shape: BoxShape.circle,
-                            border: Border.all(color: color, width: 2),
+                            border: Border.all(
+                              color: parseColor(todo.priorityColor),
+                              width: 2,
+                            ),
                           ),
                           child: Icon(
                             Icons.person,
                             size: 16,
-                            color: color.withValues(alpha: 0.9),
+                            color: parseColor(
+                              todo.priorityColor,
+                            ).withValues(alpha: 0.9),
                           ),
                         ),
                       );
