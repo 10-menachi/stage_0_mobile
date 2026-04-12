@@ -75,5 +75,5 @@ String formatTodoDateTime({
   final startTime = formatTime(start);
   final endTime = formatTime(end);
 
-  return '$dayLabel, from $startTime to $endTime';
+  return '$dayLabel • $startTime → $endTime';
 }

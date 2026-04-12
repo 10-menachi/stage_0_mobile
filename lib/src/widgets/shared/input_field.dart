@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'custom_date_picker.dart';
+import 'custom_time_picker.dart';
 
 enum InputFieldType { text, date, time }
 
@@ -69,22 +71,31 @@ class InputField extends StatelessWidget {
        validator = null,
        dateValue = null,
        onDateChanged = null;
-
   Future<void> _handleTap(BuildContext context) async {
     if (type == InputFieldType.date) {
-      final picked = await showDatePicker(
+      final picked = await showModalBottomSheet<DateTime>(
         context: context,
-        initialDate: dateValue ?? DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime.now().add(const Duration(days: 365 * 2)),
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (_) =>
+            CustomDatePicker(initialDate: dateValue ?? DateTime.now()),
       );
-      if (picked != null) onDateChanged?.call(picked);
+
+      if (picked != null) {
+        onDateChanged?.call(picked);
+      }
     } else if (type == InputFieldType.time) {
-      final picked = await showTimePicker(
+      final picked = await showModalBottomSheet<TimeOfDay>(
         context: context,
-        initialTime: timeValue ?? TimeOfDay.now(),
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (_) =>
+            CustomTimePicker(initialTime: timeValue ?? TimeOfDay.now()),
       );
-      if (picked != null) onTimeChanged?.call(picked);
+
+      if (picked != null) {
+        onTimeChanged?.call(picked);
+      }
     }
   }
 
