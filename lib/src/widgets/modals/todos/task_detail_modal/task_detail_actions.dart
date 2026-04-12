@@ -24,8 +24,12 @@ class TaskDetailActions extends ConsumerStatefulWidget {
 }
 
 class _TaskDetailActionsState extends ConsumerState<TaskDetailActions> {
+  bool _isDeleting = false;
+
   void _openEditModal(BuildContext context) {
-    Navigator.pop(context); // close detail modal first
+    if (_isDeleting) return;
+
+    Navigator.pop(context);
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -39,87 +43,116 @@ class _TaskDetailActionsState extends ConsumerState<TaskDetailActions> {
     await deleteTodo(widget.todo.id);
   }
 
+  Future<void> _handleDelete(BuildContext context) async {
+    if (_isDeleting) return;
+
+    setState(() => _isDeleting = true);
+
+    try {
+      final deleted = await showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (dialogContext) {
+          return DeleteTodoDialog(todo: widget.todo, deleteTodo: _deleteTodo);
+        },
+      );
+
+      if (!mounted) return;
+
+      if (deleted == true) {
+        Navigator.pop(context);
+        widget.onEditComplete();
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Todo deleted successfully')),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to delete todo: $e')));
+    } finally {
+      if (mounted) {
+        setState(() => _isDeleting = false);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final bool actionsDisabled = _isDeleting;
+
     return Row(
       children: [
         Expanded(
           child: GestureDetector(
-            onTap: () {
-              widget.onToggleDone();
-              Navigator.pop(context);
-            },
-            child: Container(
-              height: 54,
-              decoration: BoxDecoration(
-                color: widget.todo.done
-                    ? const Color(0xFFF0F0F0)
-                    : widget.color,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    widget.todo.done
-                        ? Icons.refresh_rounded
-                        : Icons.check_rounded,
-                    color: widget.todo.done ? Colors.black54 : Colors.white,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    widget.todo.done ? 'Mark Undone' : 'Mark Done',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
+            onTap: actionsDisabled
+                ? null
+                : () {
+                    widget.onToggleDone();
+                    Navigator.pop(context);
+                  },
+            child: Opacity(
+              opacity: actionsDisabled ? 0.6 : 1,
+              child: Container(
+                height: 54,
+                decoration: BoxDecoration(
+                  color: widget.todo.done
+                      ? const Color(0xFFF0F0F0)
+                      : widget.color,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      widget.todo.done
+                          ? Icons.refresh_rounded
+                          : Icons.check_rounded,
                       color: widget.todo.done ? Colors.black54 : Colors.white,
+                      size: 20,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 8),
+                    Text(
+                      widget.todo.done ? 'Mark Undone' : 'Mark Done',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: widget.todo.done ? Colors.black54 : Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
         const SizedBox(width: 12),
         GestureDetector(
-          onTap: () => _openEditModal(context),
-          child: Container(
-            height: 54,
-            width: 54,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.black12),
-            ),
-            child: const Icon(
-              Icons.edit_outlined,
-              size: 20,
-              color: Colors.black54,
+          onTap: actionsDisabled ? null : () => _openEditModal(context),
+          child: Opacity(
+            opacity: actionsDisabled ? 0.6 : 1,
+            child: Container(
+              height: 54,
+              width: 54,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.black12),
+              ),
+              child: const Icon(
+                Icons.edit_outlined,
+                size: 20,
+                color: Colors.black54,
+              ),
             ),
           ),
         ),
         const SizedBox(width: 10),
         GestureDetector(
-          onTap: () async {
-            final deleted = await showDialog<bool>(
-              context: context,
-              builder: (dialogContext) {
-                return DeleteTodoDialog(
-                  todo: widget.todo,
-                  deleteTodo: _deleteTodo,
-                );
-              },
-            );
-
-            if (deleted == true && context.mounted) {
-              Navigator.pop(context);
-              widget.onEditComplete();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Todo deleted successfully')),
-              );
-            }
-          },
+          onTap: () => _handleDelete(context),
           child: Container(
             height: 54,
             width: 54,
@@ -127,10 +160,18 @@ class _TaskDetailActionsState extends ConsumerState<TaskDetailActions> {
               color: const Color(0xFFFFEEEE),
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const Icon(
-              Icons.delete_outline_rounded,
-              size: 20,
-              color: Color(0xFFE53935),
+            child: Center(
+              child: _isDeleting
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2.2),
+                    )
+                  : const Icon(
+                      Icons.delete_outline_rounded,
+                      size: 20,
+                      color: Color(0xFFE53935),
+                    ),
             ),
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stage_0_mobile/src/database.dart';
 import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/todos_provider.dart';
+import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/toggle_done_provider.dart';
 import 'package:stage_0_mobile/src/theme.dart';
 import 'package:stage_0_mobile/src/widgets/modals/todos/create_todo_modal/create_todo_modal.dart';
 import 'package:stage_0_mobile/src/widgets/modals/todos/task_detail_modal/task_detail_modal.dart';
@@ -33,6 +34,11 @@ class _TodoListScreenState extends ConsumerState<TodoListScreen> {
     });
   }
 
+  Future<void> _toggleDone(TodoItem todo) async {
+    final deleteTodo = ref.read(toggleTodoDoneProvider);
+    await deleteTodo(todo);
+  }
+
   void _openTaskDetail(TodoItem todo, int index) {
     showModalBottomSheet(
       context: context,
@@ -40,7 +46,7 @@ class _TodoListScreenState extends ConsumerState<TodoListScreen> {
       backgroundColor: Colors.transparent,
       builder: (context) => TaskDetailModal(
         todo: todo,
-        onToggleDone: () {},
+        onToggleDone: () => _toggleDone(todo),
         onEditComplete: () => ref.invalidate(todosProvider),
       ),
     ).then((_) {
