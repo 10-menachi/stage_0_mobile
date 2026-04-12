@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:stage_0_mobile/src/database.dart';
 import 'package:stage_0_mobile/src/helpers.dart';
 import 'package:stage_0_mobile/src/widgets/modals/todos/task_detail_modal/detail_row.dart';
 import 'package:stage_0_mobile/src/widgets/modals/todos/task_detail_modal/detail_section_label.dart';
 import 'package:stage_0_mobile/src/widgets/modals/todos/task_detail_modal/header_chip.dart';
 import 'package:stage_0_mobile/src/widgets/shared/custom_divider.dart';
+import 'package:stage_0_mobile/src/widgets/modals/todos/task_detail_modal/task_detail_actions.dart';
 
 class TaskDetailModal extends StatelessWidget {
   final TodoItem todo;
   final VoidCallback onToggleDone;
+  final VoidCallback onEditComplete;
 
   const TaskDetailModal({
     super.key,
     required this.todo,
     required this.onToggleDone,
+    required this.onEditComplete,
   });
 
   @override
@@ -210,81 +212,12 @@ class TaskDetailModal extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 32),
-
-                  // Action buttons
-                  Row(
-                    children: [
-                      // Toggle done button
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            onToggleDone();
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            height: 54,
-                            decoration: BoxDecoration(
-                              color: isDone ? const Color(0xFFF0F0F0) : color,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  isDone
-                                      ? Icons.refresh_rounded
-                                      : Icons.check_rounded,
-                                  color: isDone ? Colors.black54 : Colors.white,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  isDone ? 'Mark Undone' : 'Mark Done',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                    color: isDone
-                                        ? Colors.black54
-                                        : Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      // Edit button
-                      Container(
-                        height: 54,
-                        width: 54,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: Colors.black12),
-                        ),
-                        child: const Icon(
-                          Icons.edit_outlined,
-                          size: 20,
-                          color: Colors.black54,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      // Delete button
-                      Container(
-                        height: 54,
-                        width: 54,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFFFEEEE),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: const Icon(
-                          Icons.delete_outline_rounded,
-                          size: 20,
-                          color: Color(0xFFE53935),
-                        ),
-                      ),
-                    ],
+                  TaskDetailActions(
+                    todo: todo,
+                    isDone: isDone,
+                    color: color,
+                    onToggleDone: onToggleDone,
+                    onEditComplete: onEditComplete,
                   ),
                 ],
               ),

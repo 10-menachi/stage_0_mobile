@@ -38,8 +38,14 @@ class _TodoListScreenState extends ConsumerState<TodoListScreen> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => TaskDetailModal(todo: todo, onToggleDone: () {}),
-    );
+      builder: (context) => TaskDetailModal(
+        todo: todo,
+        onToggleDone: () {},
+        onEditComplete: () => ref.invalidate(todosProvider),
+      ),
+    ).then((_) {
+      ref.invalidate(todosProvider);
+    });
   }
 
   void _updateFilterIndex(int index) {

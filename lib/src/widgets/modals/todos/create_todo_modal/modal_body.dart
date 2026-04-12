@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:stage_0_mobile/src/database.dart';
 import 'package:stage_0_mobile/src/features/todo_list/forms/create_task_form_data.dart';
 import 'package:stage_0_mobile/src/helpers.dart';
 import 'package:stage_0_mobile/src/widgets/modals/todos/create_todo_modal/modal_label.dart';
@@ -7,8 +8,9 @@ import 'package:stage_0_mobile/src/widgets/modals/todos/create_todo_modal/picker
 
 class ModalBody extends StatefulWidget {
   final void Function(CreateTaskFormData data)? onSubmit;
+  final TodoItem? initialData;
 
-  const ModalBody({super.key, this.onSubmit});
+  const ModalBody({super.key, this.onSubmit, this.initialData});
 
   @override
   State<ModalBody> createState() => _ModalBodyState();
@@ -24,6 +26,21 @@ class _ModalBodyState extends State<ModalBody> {
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _startTime = const TimeOfDay(hour: 9, minute: 0);
   TimeOfDay _endTime = const TimeOfDay(hour: 10, minute: 30);
+
+  @override
+  void initState() {
+    super.initState();
+    final todo = widget.initialData;
+    if (todo != null) {
+      _titleController.text = todo.title;
+      _descController.text = todo.description;
+      _selectedCategory = todo.category;
+      _selectedColor = parseColor(todo.priorityColor);
+      _selectedDate = todo.date;
+      _startTime = TimeOfDay.fromDateTime(todo.startTime);
+      _endTime = TimeOfDay.fromDateTime(todo.endTime);
+    }
+  }
 
   @override
   void dispose() {
@@ -75,6 +92,8 @@ class _ModalBodyState extends State<ModalBody> {
 
   @override
   Widget build(BuildContext context) {
+    final isEditing = widget.initialData != null;
+
     return Expanded(
       child: Form(
         key: _formKey,
@@ -245,14 +264,14 @@ class _ModalBodyState extends State<ModalBody> {
                       borderRadius: BorderRadius.circular(18),
                     ),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.check_circle_outline, size: 20),
-                      SizedBox(width: 8),
+                      const Icon(Icons.check_circle_outline, size: 20),
+                      const SizedBox(width: 8),
                       Text(
-                        'Create Task',
-                        style: TextStyle(
+                        isEditing ? 'Update Task' : 'Create Task',
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
                           letterSpacing: -0.2,

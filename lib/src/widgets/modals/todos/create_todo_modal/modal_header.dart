@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ModalHeader extends StatelessWidget {
-  const ModalHeader({super.key});
+  final String title;
+  const ModalHeader({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +34,8 @@ class ModalHeader extends StatelessWidget {
           const SizedBox(height: 16),
           Row(
             children: [
-              const Text(
-                'New Task',
+              Text(
+                title,
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
