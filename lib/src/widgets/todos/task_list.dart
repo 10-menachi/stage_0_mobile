@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stage_0_mobile/src/database.dart';
-import 'package:stage_0_mobile/src/helpers.dart';
 import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/todos_provider.dart';
 import 'package:stage_0_mobile/src/widgets/todos/todo_card.dart';
 
 class TaskList extends ConsumerWidget {
   final void Function(TodoItem todo, int index) openTaskDetail;
+  final int? selectedFilterIndex;
 
-  const TaskList({super.key, required this.openTaskDetail});
+  const TaskList({
+    super.key,
+    required this.openTaskDetail,
+    this.selectedFilterIndex,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final todos = ref.watch(todosProvider);
+    final todos = ref.watch(todosProvider(selectedFilterIndex));
 
     return Expanded(
       child: todos.when(

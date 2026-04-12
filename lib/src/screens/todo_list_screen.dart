@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stage_0_mobile/src/database.dart';
+import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/todos_count_provider.dart';
 import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/todos_provider.dart';
 import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/toggle_done_provider.dart';
 import 'package:stage_0_mobile/src/theme.dart';
+import 'package:stage_0_mobile/src/utils/constants.dart';
 import 'package:stage_0_mobile/src/widgets/modals/todos/create_todo_modal/create_todo_modal.dart';
 import 'package:stage_0_mobile/src/widgets/modals/todos/task_detail_modal/task_detail_modal.dart';
 import 'package:stage_0_mobile/src/widgets/navigation/app_bar/custom_app_bar.dart';
@@ -20,7 +22,6 @@ class TodoListScreen extends ConsumerStatefulWidget {
 
 class _TodoListScreenState extends ConsumerState<TodoListScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final List<String> _filters = ['Today', 'Tomorrow', 'Upcoming'];
   int selectedFilterIndex = 0;
 
   void _openCreateTodoModal() {
@@ -30,6 +31,7 @@ class _TodoListScreenState extends ConsumerState<TodoListScreen> {
       backgroundColor: Colors.transparent,
       builder: (context) => const CreateTodoModal(),
     ).then((_) {
+      ref.invalidate(todosCountProvider);
       ref.invalidate(todosProvider);
     });
   }
@@ -47,10 +49,14 @@ class _TodoListScreenState extends ConsumerState<TodoListScreen> {
       builder: (context) => TaskDetailModal(
         todo: todo,
         onToggleDone: () => _toggleDone(todo),
-        onEditComplete: () => ref.invalidate(todosProvider),
+        onEditComplete: () {
+          ref.invalidate(todosProvider);
+          ref.invalidate(todosCountProvider);
+        },
       ),
     ).then((_) {
       ref.invalidate(todosProvider);
+      ref.invalidate(todosCountProvider);
     });
   }
 
@@ -77,12 +83,15 @@ class _TodoListScreenState extends ConsumerState<TodoListScreen> {
               ),
               const SizedBox(height: 20),
               TodosPageHeader(
-                filters: _filters,
+                filters: filters,
                 selectedFilterIndex: selectedFilterIndex,
                 updateFilterIndex: _updateFilterIndex,
               ),
               const SizedBox(height: 16),
-              TaskList(openTaskDetail: _openTaskDetail),
+              TaskList(
+                openTaskDetail: _openTaskDetail,
+                selectedFilterIndex: selectedFilterIndex,
+              ),
             ],
           ),
         ),

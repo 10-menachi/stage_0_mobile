@@ -37,3 +37,43 @@ String formatTimeOfDay(TimeOfDay t) {
 String truncateText(String text, {int max = 6}) {
   return text.length > max ? '${text.substring(0, max)}...' : text;
 }
+
+String formatTodoDateTime({
+  required DateTime date,
+  required DateTime start,
+  required DateTime end,
+}) {
+  final now = DateTime.now();
+
+  final today = DateTime(now.year, now.month, now.day);
+  final todoDay = DateTime(date.year, date.month, date.day);
+
+  final difference = todoDay.difference(today).inDays;
+
+  String dayLabel;
+
+  switch (difference) {
+    case 0:
+      dayLabel = 'Today';
+      break;
+    case 1:
+      dayLabel = 'Tomorrow';
+      break;
+    case -1:
+      dayLabel = 'Yesterday';
+      break;
+    default:
+      if (difference > 1 && difference <= 7) {
+        dayLabel = 'In $difference days';
+      } else if (difference < -1 && difference >= -7) {
+        dayLabel = '${difference.abs()} days ago';
+      } else {
+        dayLabel = DateFormat('EEE, d MMM').format(date);
+      }
+  }
+
+  final startTime = formatTime(start);
+  final endTime = formatTime(end);
+
+  return '$dayLabel, from $startTime to $endTime';
+}

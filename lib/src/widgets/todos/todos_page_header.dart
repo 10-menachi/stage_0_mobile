@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/create_todo_provider.dart';
-import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/todos_provider.dart';
-import 'package:stage_0_mobile/src/utils/constants.dart';
+import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/todos_count_provider.dart';
+import 'package:stage_0_mobile/src/widgets/shared/animated_task_count.dart';
 
 class TodosPageHeader extends StatefulWidget {
   final int selectedFilterIndex;
@@ -22,43 +21,40 @@ class TodosPageHeader extends StatefulWidget {
 }
 
 class _TodosPageHeaderState extends State<TodosPageHeader> {
-  final String formattedDate = DateFormat('EEEE, d MMM').format(DateTime.now());
+  late final DateTime _today;
+  late final String _formattedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    final now = DateTime.now();
+    _today = DateTime(now.year, now.month, now.day);
+    _formattedDate = DateFormat('EEEE, d MMM').format(now);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, _) {
-        final todos = ref.watch(todosProvider);
+        final todosCount = ref.watch(todosCountProvider(_today));
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              DateFormat('MMMM').format(DateTime.now()),
+              DateFormat('MMMM').format(_today),
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 12),
             Text(
-              formattedDate,
+              _formattedDate,
               style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
             ),
             const SizedBox(height: 8),
-            todos.when(
-              data: (data) => Text(
-                'You Have ${data.length} Tasks Today',
-                style: const TextStyle(
-                  fontSize: 24,
-                  height: 1.05,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              loading: () => const Text(
-                'Loading tasks...',
-                style: TextStyle(
-                  fontSize: 24,
-                  height: 1.05,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+            todosCount.when(
+              data: (count) =>
+                  AnimatedTaskCount(count: count, isLoading: false),
+              loading: () => const AnimatedTaskCount.loading(),
               error: (error, stackTrace) => const Text(
                 'Failed to load tasks',
                 style: TextStyle(
@@ -87,7 +83,6 @@ class _TodosPageHeaderState extends State<TodosPageHeader> {
               ),
             ),
             const SizedBox(height: 18),
-            // ── Filter chips ──
             SizedBox(
               height: 38,
               child: ListView.separated(
@@ -95,7 +90,8 @@ class _TodosPageHeaderState extends State<TodosPageHeader> {
                 itemCount: widget.filters.length,
                 separatorBuilder: (_, _) => const SizedBox(width: 10),
                 itemBuilder: (context, index) {
-                  final bool isSelected = widget.selectedFilterIndex == index;
+                  final isSelected = widget.selectedFilterIndex == index;
+
                   return GestureDetector(
                     onTap: () => widget.updateFilterIndex(index),
                     child: AnimatedContainer(

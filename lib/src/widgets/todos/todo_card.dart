@@ -77,42 +77,15 @@ class TodoCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  '${formatTime(todo.startTime)} - ${formatTime(todo.endTime)}',
+                  formatTodoDateTime(
+                    date: todo.date,
+                    start: todo.startTime,
+                    end: todo.endTime,
+                  ),
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: 0.95),
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const Spacer(),
-                SizedBox(
-                  width: 64,
-                  height: 32,
-                  child: Stack(
-                    children: List.generate(3, (index) {
-                      return Positioned(
-                        left: index * 18.0,
-                        child: Container(
-                          height: 32,
-                          width: 32,
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.85),
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: parseColor(todo.priorityColor),
-                              width: 2,
-                            ),
-                          ),
-                          child: Icon(
-                            Icons.person,
-                            size: 16,
-                            color: parseColor(
-                              todo.priorityColor,
-                            ).withValues(alpha: 0.9),
-                          ),
-                        ),
-                      );
-                    }),
                   ),
                 ),
               ],
