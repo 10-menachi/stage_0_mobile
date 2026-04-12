@@ -33,3 +33,7 @@ String formatTimeOfDay(TimeOfDay t) {
   final dt = DateTime(now.year, now.month, now.day, t.hour, t.minute);
   return DateFormat('hh:mm a').format(dt);
 }
+
+String truncateText(String text, {int max = 6}) {
+  return text.length > max ? '${text.substring(0, max)}...' : text;
+}
