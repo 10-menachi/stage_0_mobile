@@ -60,19 +60,24 @@ class _TaskDetailActionsState extends ConsumerState<TaskDetailActions> {
       if (!mounted) return;
 
       if (deleted == true) {
-        Navigator.pop(context);
+        if (context.mounted) {
+          Navigator.pop(context);
+        }
         widget.onEditComplete();
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Todo deleted successfully')),
-        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Todo deleted successfully')),
+          );
+        }
       }
     } catch (e) {
       if (!mounted) return;
-
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Failed to delete todo: $e')));
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to delete todo: $e')));
+      }
     } finally {
       if (mounted) {
         setState(() => _isDeleting = false);

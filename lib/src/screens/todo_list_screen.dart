@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stage_0_mobile/src/database.dart';
-import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/todos_count_provider.dart';
-import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/todos_provider.dart';
+import 'package:stage_0_mobile/src/helpers.dart';
 import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/toggle_done_provider.dart';
 import 'package:stage_0_mobile/src/theme.dart';
 import 'package:stage_0_mobile/src/utils/constants.dart';
@@ -31,8 +30,7 @@ class _TodoListScreenState extends ConsumerState<TodoListScreen> {
       backgroundColor: Colors.transparent,
       builder: (context) => const CreateTodoModal(),
     ).then((_) {
-      ref.invalidate(todosCountProvider);
-      ref.invalidate(todosProvider);
+      invalidateProviders(ref);
     });
   }
 
@@ -50,13 +48,11 @@ class _TodoListScreenState extends ConsumerState<TodoListScreen> {
         todo: todo,
         onToggleDone: () => _toggleDone(todo),
         onEditComplete: () {
-          ref.invalidate(todosProvider);
-          ref.invalidate(todosCountProvider);
+          invalidateProviders(ref);
         },
       ),
     ).then((_) {
-      ref.invalidate(todosProvider);
-      ref.invalidate(todosCountProvider);
+      invalidateProviders(ref);
     });
   }
 

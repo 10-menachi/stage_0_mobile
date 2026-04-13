@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/done_todos_count_provider.dart';
+import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/todos_count_provider.dart';
+import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/todos_provider.dart';
+import 'package:stage_0_mobile/src/settings/riverpod/providers/todos/undone_todos_count_provider.dart';
 
 final List<Color> priorityColorOptions = const [
   Color(0xFF7B6EF6),
@@ -76,4 +81,11 @@ String formatTodoDateTime({
   final endTime = formatTime(end);
 
   return '$dayLabel • $startTime → $endTime';
+}
+
+void invalidateProviders(WidgetRef ref) {
+  ref.invalidate(todosCountProvider);
+  ref.invalidate(todosProvider);
+  ref.invalidate(todosDoneCountProvider);
+  ref.invalidate(todosLeftCountProvider);
 }
