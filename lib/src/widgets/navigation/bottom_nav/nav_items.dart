@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stage_0_mobile/src/theme.dart';
 import 'package:stage_0_mobile/src/utils/constants.dart';
-import 'package:stage_0_mobile/src/widgets/navigation/nav_item.dart';
+import 'package:stage_0_mobile/src/widgets/navigation/bottom_nav/nav_item.dart';
 
 class NavItems extends StatelessWidget {
   const NavItems({
